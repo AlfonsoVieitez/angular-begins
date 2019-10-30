@@ -6,7 +6,7 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
   styleUrls: ['./source-form.component.css'],
 })
 export class SourceFormComponent implements OnInit {
-  sourceAmount: 0;
+  sourceAmount = 1;
   @Output() convert = new EventEmitter<number>();
   constructor() {}
 
