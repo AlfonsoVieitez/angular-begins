@@ -1,2 +1,2 @@
-<a-begins-source-form></a-begins-source-form>
-<a-begins-target-list></a-begins-target-list>
+<a-begins-source-form (convert)="convert($event)"></a-begins-source-form>
+<a-begins-target-list [currencies]="targetAmounts$ | async"></a-begins-target-list>

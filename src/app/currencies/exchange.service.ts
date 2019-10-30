@@ -9,7 +9,7 @@ import { map } from 'rxjs/operators';
 export class ExchangeService {
   constructor(private httpClient: HttpClient) {}
 
-  getCurrentExchangeRates$(): Observable<any[]> {
+  getCurrentExchangeRates$(): Observable<any> {
     return this.httpClient
       .get<any>('https://api.exchangeratesapi.io/latest')
       .pipe(map(result => result.rates));
