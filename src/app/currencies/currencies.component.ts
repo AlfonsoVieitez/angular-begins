@@ -17,7 +17,7 @@ export class CurrenciesComponent implements OnInit {
   convert(sourceAmount: number) {
     this.targetAmounts$ = this.exchangeService.getCurrentExchangeRates$().pipe(
       map((rates: any[]) => {
-        return rates.map(r => (r.amount *= sourceAmount));
+        return rates.map(r => ({ ...r, amount: r.amount *= sourceAmount }));
       })
     );
   }
