@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Observable, Subscription } from 'rxjs';
 import { ProjectsService } from './projects.service';
 
 @Component({
@@ -7,8 +7,9 @@ import { ProjectsService } from './projects.service';
   templateUrl: './projects.component.html',
   styleUrls: ['./projects.component.css']
 })
-export class ProjectsComponent implements OnInit {
+export class ProjectsComponent implements OnInit, OnDestroy {
   projects$: Observable<any[]>;
+  private postSubscriptions: Subscription[] = [];
   constructor(private projectsService: ProjectsService) {}
 
   ngOnInit() {
@@ -16,14 +17,20 @@ export class ProjectsComponent implements OnInit {
   }
 
   onSave(newProject: any) {
-    this.projectsService.post$(newProject).subscribe({
-      next: x => this.getProjects(),
-      error: e => console.error(e),
-      complete: () => console.warn('end')
-    });
+    this.postSubscriptions.push(
+      this.projectsService.post$(newProject).subscribe({
+        next: x => this.getProjects(),
+        error: e => console.error(e),
+        complete: () => console.warn('end')
+      })
+    );
   }
 
   getProjects() {
     this.projects$ = this.projectsService.getAll$();
+  }
+
+  ngOnDestroy(): void {
+    this.postSubscriptions.forEach(s => s.unsubscribe());
   }
 }

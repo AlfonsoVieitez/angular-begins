@@ -12,6 +12,10 @@ export class ProjectsService {
     return this.httpClient.get<any[]>(this.url);
   }
 
+  getById$(id: string): Observable<any> {
+    const url = `${this.url}/${id}`;
+    return this.httpClient.get<any>(url);
+  }
   post$(project: any) {
     return this.httpClient.post<any>(this.url, project);
   }

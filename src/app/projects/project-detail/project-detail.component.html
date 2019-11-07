@@ -1,0 +1,9 @@
+<article *ngIf="project$ | async as project ; else empty">
+  {{ project.name  }}
+  <main>
+    {{ project.owner }}
+  </main>
+</article>
+<ng-template #empty>
+  ...
+</ng-template>
