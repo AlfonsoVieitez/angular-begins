@@ -1,7 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
+import { tap } from 'rxjs/operators';
+import { StoreService } from '../store.service';
 import { ProjectsService } from './projects.service';
-
 @Component({
   selector: 'a-begins-projects',
   templateUrl: './projects.component.html',
@@ -10,7 +11,7 @@ import { ProjectsService } from './projects.service';
 export class ProjectsComponent implements OnInit, OnDestroy {
   projects$: Observable<any[]>;
   private postSubscriptions: Subscription[] = [];
-  constructor(private projectsService: ProjectsService) {}
+  constructor(private projectsService: ProjectsService, private store: StoreService) {}
 
   ngOnInit() {
     this.getProjects();
@@ -27,7 +28,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
   }
 
   getProjects() {
-    this.projects$ = this.projectsService.getAll$();
+    this.projects$ = this.projectsService.getAll$().pipe(tap(x => this.store.dispatch('setNumProjects', x.length)));
   }
 
   ngOnDestroy(): void {
