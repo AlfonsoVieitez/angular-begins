@@ -1,9 +1,7 @@
-<article *ngIf="project$ | async as project ; else empty">
-  {{ project.name  }}
-  <main>
-    {{ project.owner }}
-  </main>
-</article>
+<a-begins-project-detail-presenter *ngIf="project$ | async as project ; else empty"
+                                   [project]="project"
+                                   (delete)="onDelete()">
+</a-begins-project-detail-presenter>
 <ng-template #empty>
   ...
 </ng-template>

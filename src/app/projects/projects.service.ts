@@ -23,4 +23,12 @@ export class ProjectsService {
   post$(project: any) {
     return this.httpClient.post<any>(this.url, project);
   }
+  deleteById$(projectId: string) {
+    const url = `${this.url}/${projectId}`;
+    return this.httpClient.delete<any>(url).pipe(tap(x => this.count$().subscribe()));
+  }
+  count$() {
+    const url = `${this.url}/count`;
+    return this.httpClient.get<any>(url).pipe(tap(x => this.store.dispatch('setNumProjects', x.count)));
+  }
 }

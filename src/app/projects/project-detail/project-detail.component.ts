@@ -10,10 +10,16 @@ import { ProjectsService } from '../projects.service';
 })
 export class ProjectDetailComponent implements OnInit {
   project$: Observable<any>;
-  constructor(projectsService: ProjectsService, activatedRoute: ActivatedRoute) {
-    const id = activatedRoute.snapshot.params.id;
-    this.project$ = projectsService.getById$(id);
+  projectId: string;
+
+  constructor(private projectsService: ProjectsService, activatedRoute: ActivatedRoute) {
+    this.projectId = activatedRoute.snapshot.params.id;
+    this.project$ = this.projectsService.getById$(this.projectId);
   }
 
   ngOnInit() {}
+
+  onDelete() {
+    this.projectsService.deleteById$(this.projectId).subscribe();
+  }
 }
