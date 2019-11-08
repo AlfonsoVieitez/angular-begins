@@ -1,6 +1,7 @@
 <article>
   <header>
-    <a-begins-top-bar [title]="title"></a-begins-top-bar>
+    <a-begins-top-bar [title]="title"
+                      [numProjects]="numProjects$ | async"></a-begins-top-bar>
   </header>
   <main>
     <router-outlet></router-outlet>
@@ -9,3 +10,4 @@
     <a-begins-legal-credits></a-begins-legal-credits>
   </footer>
 </article>
+d
