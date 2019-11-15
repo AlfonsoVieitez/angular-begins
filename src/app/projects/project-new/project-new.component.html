@@ -1,9 +1,20 @@
-<form>
-  <label>Project Name</label>
-  <input type="text"
-         name="name"
-         [(ngModel)]="project.name">
+<form #projectForm="ngForm">
+  <div>
+    <label>Project Name: </label>
+    <input type="text"
+           name="name"
+           [(ngModel)]="project.name"
+           required
+           minlength="4"
+           #nameControl="ngModel">
+    <span *ngIf="nameControl.invalid"> * </span>
+    <small *ngIf="nameControl.invalid && (nameControl.touched || nameControl.dirty)">
+      <span *ngIf="nameControl.errors['required']">We need a poject name.</span>
+      <span *ngIf="nameControl.errors['minlength']">Provide at least 4 chars.</span>
+    </small>
+  </div>
   <input type="submit"
          value="Save"
+         [disabled]="projectForm.invalid"
          (click)="onClick()">
 </form>
