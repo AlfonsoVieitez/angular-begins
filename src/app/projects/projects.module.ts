@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { MinDirective } from './min-validator.directive';
+import { SharedModule } from '../shared/shared.module';
 import { ProjectDetailPresenterComponent } from './project-detail/project-detail-presenter/project-detail-presenter.component';
 import { ProjectDetailComponent } from './project-detail/project-detail.component';
 import { ProjectListComponent } from './project-list/project-list.component';
@@ -16,8 +16,7 @@ import { ProjectsComponent } from './projects.component';
     ProjectListComponent,
     ProjectDetailComponent,
     ProjectDetailPresenterComponent,
-    MinDirective,
   ],
-  imports: [CommonModule, ProjectsRoutingModule, FormsModule],
+  imports: [CommonModule, ProjectsRoutingModule, FormsModule, SharedModule],
 })
 export class ProjectsModule {}
