@@ -11,8 +11,10 @@ import { StoreService } from './store.service';
 export class AppComponent {
   title = 'angular-begins';
   numProjects$: Observable<number>;
+  httpError$: Observable<any>;
 
   constructor(store: StoreService) {
     this.numProjects$ = store.select$().pipe(map(s => s.numProjects));
+    this.httpError$ = store.select$().pipe(map(s => s.httpError));
   }
 }

@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { StoreService } from '../store.service';
 
@@ -10,10 +10,22 @@ import { StoreService } from '../store.service';
 export class ProjectsService {
   private url = 'https://api-base.herokuapp.com/api/pub/projects';
 
+  private projects: any[] = [];
+  private projects$: BehaviorSubject<any[]> = new BehaviorSubject(this.projects);
+
   constructor(private httpClient: HttpClient, private store: StoreService) {}
 
+  select$() {
+    return this.projects$.asObservable();
+  }
   getAll$(): Observable<any[]> {
-    return this.httpClient.get<any[]>(this.url).pipe(tap(x => this.store.dispatch('setNumProjects', x.length)));
+    return this.httpClient.get<any[]>(this.url).pipe(
+      tap(x => {
+        this.projects = x;
+        this.projects$.next(x);
+        this.store.dispatch('setNumProjects', x.length);
+      })
+    );
   }
 
   getById$(id: string): Observable<any> {
@@ -21,7 +33,12 @@ export class ProjectsService {
     return this.httpClient.get<any>(url);
   }
   post$(project: any) {
-    return this.httpClient.post<any>(this.url, project);
+    return this.httpClient.post<any>(this.url, project).pipe(
+      tap(x => {
+        this.projects.push(x);
+        this.projects$.next(this.projects);
+      })
+    );
   }
   deleteById$(projectId: string) {
     const url = `${this.url}/${projectId}`;

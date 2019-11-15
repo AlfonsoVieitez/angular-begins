@@ -19,7 +19,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
   onSave(newProject: any) {
     this.postSubscriptions.push(
       this.projectsService.post$(newProject).subscribe({
-        next: x => this.getProjects(),
+        next: x => (this.projects$ = this.projectsService.select$()),
         error: e => console.error(e),
         complete: () => console.warn('end')
       })
