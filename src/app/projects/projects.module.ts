@@ -15,8 +15,8 @@ import { ProjectsComponent } from './projects.component';
     ProjectNewComponent,
     ProjectListComponent,
     ProjectDetailComponent,
-    ProjectDetailPresenterComponent,
+    ProjectDetailPresenterComponent
   ],
-  imports: [CommonModule, ProjectsRoutingModule, FormsModule, SharedModule],
+  imports: [CommonModule, ProjectsRoutingModule, FormsModule, SharedModule]
 })
 export class ProjectsModule {}
