@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { ProjectsService } from '../projects.service';
 
@@ -12,14 +12,20 @@ export class ProjectDetailComponent implements OnInit {
   project$: Observable<any>;
   projectId: string;
 
-  constructor(private projectsService: ProjectsService, activatedRoute: ActivatedRoute) {
-    this.projectId = activatedRoute.snapshot.params.id;
+  constructor(
+    private projectsService: ProjectsService,
+    private activatedRoute: ActivatedRoute,
+    private router: Router
+  ) {}
+
+  ngOnInit() {
+    this.projectId = this.activatedRoute.snapshot.params.id;
     this.project$ = this.projectsService.getById$(this.projectId);
   }
 
-  ngOnInit() {}
-
   onDelete() {
-    this.projectsService.deleteById$(this.projectId).subscribe();
+    this.projectsService.deleteById$(this.projectId).subscribe({
+      next: () => this.router.navigate(['projects'])
+    });
   }
 }

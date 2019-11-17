@@ -11,19 +11,22 @@ export class ProjectsService {
   private url = 'https://api-base.herokuapp.com/api/pub/projects';
 
   private projects: any[] = [];
-  private projects$: BehaviorSubject<any[]> = new BehaviorSubject(this.projects);
+  private projects$: BehaviorSubject<any[]> = new BehaviorSubject(
+    this.projects
+  );
 
   constructor(private httpClient: HttpClient, private store: StoreService) {}
 
   select$() {
     return this.projects$.asObservable();
   }
+
   getAll$(): Observable<any[]> {
     return this.httpClient.get<any[]>(this.url).pipe(
-      tap(x => {
-        this.projects = x;
-        this.projects$.next(x);
-        this.store.dispatch('setNumProjects', x.length);
+      tap(res => {
+        this.projects = res || [];
+        this.projects$.next(this.projects);
+        this.store.dispatch('setNumProjects', this.projects.length);
       })
     );
   }
@@ -32,20 +35,28 @@ export class ProjectsService {
     const url = `${this.url}/${id}`;
     return this.httpClient.get<any>(url);
   }
+
   post$(project: any) {
     return this.httpClient.post<any>(this.url, project).pipe(
-      tap(x => {
-        this.projects.push(x);
+      tap(res => {
+        this.projects.push(res);
         this.projects$.next(this.projects);
+        this.count$().subscribe();
       })
     );
   }
+
   deleteById$(projectId: string) {
     const url = `${this.url}/${projectId}`;
-    return this.httpClient.delete<any>(url).pipe(tap(x => this.count$().subscribe()));
+    return this.httpClient
+      .delete<any>(url)
+      .pipe(tap(res => this.count$().subscribe()));
   }
+
   count$() {
     const url = `${this.url}/count`;
-    return this.httpClient.get<any>(url).pipe(tap(x => this.store.dispatch('setNumProjects', x.count)));
+    return this.httpClient
+      .get<any>(url)
+      .pipe(tap(res => this.store.dispatch('setNumProjects', res.count)));
   }
 }

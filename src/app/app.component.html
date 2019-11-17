@@ -12,4 +12,6 @@
     <a-begins-legal-credits></a-begins-legal-credits>
   </footer>
 </article>
-<pre> {{ httpError$ | async | json }} </pre>
+<aside *ngIf="httpError$ | async as httpError">
+  <pre> {{ httpError | json }} </pre>
+</aside>

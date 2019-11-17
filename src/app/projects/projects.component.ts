@@ -17,13 +17,14 @@ export class ProjectsComponent implements OnInit, OnDestroy {
   }
 
   onSave(newProject: any) {
-    this.postSubscriptions.push(
-      this.projectsService.post$(newProject).subscribe({
+    const subscriptionToPost = this.projectsService
+      .post$(newProject)
+      .subscribe({
         next: x => (this.projects$ = this.projectsService.select$()),
         error: e => console.error(e),
-        complete: () => console.warn('end')
-      })
-    );
+        complete: () => console.warn('posted: ' + JSON.stringify(newProject))
+      });
+    this.postSubscriptions.push(subscriptionToPost);
   }
 
   getProjects() {
